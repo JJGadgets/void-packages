@@ -3990,3 +3990,9 @@ libbasu.so.0 basu-0.2.0_1
 libXcomp.so.3 nx-libs-3.5.99.24_1
 libXcompshad.so.3 nx-libs-3.5.99.24_1
 libNX_X11.so.6 nx-libs-3.5.99.24_1
+libKUserFeedbackCore.so.1 kuserfeedback-1.0.0_1
+libKUserFeedbackWidgets.so.1 kuserfeedback-1.0.0_1
+libkerfuffle.so.21 ark-21.04.0_1
+libpackagekitqt5.so.1 PackageKit-Qt-1.0.2_1
+libAppStreamQt.so.2 AppStream-qt-0.13.1_1
+libfwupd.so.2 fwupd-1.5.8_1

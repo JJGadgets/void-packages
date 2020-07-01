@@ -1,0 +1,16 @@
+# Template file for 'grsync'
+pkgname=grsync
+version=1.3.0
+revision=1
+archs="x86_64"
+build_style=gnu-configure
+configure_args="--prefix=/usr --disable-unity"
+hostmakedepends="pkgconf intltool"
+makedepends="gtk+3-devel"
+depends="gtk+3 rsync"
+short_desc="Grsync is used to synchronize folders, files and make backups"
+maintainer="Domenico Panella <pandom79@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://www.opbyte.it"
+distfiles="https://www.opbyte.it/release/${pkgname}-${version}.tar.gz"
+checksum=b7c7c6a62e05302d8317c38741e7d71ef9ab4639ee5bff2622a383b2043a35fc

@@ -1,0 +1,20 @@
+# Template file for 'python3-dlib'
+pkgname=python3-dlib
+version=19.22
+revision=1
+wrksrc=dlib-${version}
+build_style=python3-module
+hostmakedepends="cmake python3-setuptools"
+makedepends="python3-devel
+ $(vopt_if openblas openblas-devel)
+ $(vopt_if x11 libX11-devel)"
+depends="python3 cblas giflib lapack libjpeg-turbo libpng libX11"
+short_desc="C++ toolkit containing machine learning algorithms and tools"
+maintainer="Domenico Panella <pandom79@gmail.com>"
+license="BSL-1.0"
+homepage="https://pypi.org/project/dlib/"
+distfiles="http://dlib.net/files/dlib-${version}.tar.bz2"
+checksum=20b8aad5d65594a34e22f59abbf0bf89450cb4a2a6a8c3b9eb49c8308f51d572
+build_options="openblas x11"
+desc_option_openblas="Enable OpenBlas for performance"
+build_options_default="openblas x11"
