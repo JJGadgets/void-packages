@@ -1,0 +1,16 @@
+# Template file for 'zenith'
+pkgname=zenith
+version=0.0git
+revision=1
+archs="x86_64"
+build_style=cargo
+hostmakedepends="git cargo pkg-config rustup"
+makedepends="make"
+depends="make"
+short_desc="In terminal graphical metrics for your *nix system written in Rust"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="MIT"
+homepage="https://github.com/bvaisvil/zenith"
+do_fetch() {
+	git clone --depth=1 https://github.com/bvaisvil/zenith.git ${wrksrc}
+}
