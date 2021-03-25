@@ -4,15 +4,19 @@ version=2.2.0
 revision=1
 patch_args="-Np1"
 build_style=cmake
+make_cmd=make
 hostmakedepends="git automake pkg-config libtool wget xxd desktop-file-utils"
-makedepends="glib-devel cairo-devel librsvg-devel fuse-devel libarchive-devel boost-devel liblzma-devel libcurl-devel qt5-devel which"
+makedepends="glib-devel cairo-devel librsvg-devel libXpm-devel fuse-devel libarchive-devel boost-devel liblzma-devel libcurl-devel qt5-devel"
 short_desc="Helper application for Linux distributions serving as a kind of \"entry point\" for running and integrating AppImages"
 maintainer="Marcus van Dam <mail@marcusvandam.nl>"
 license="MIT"
 homepage="https://github.com/TheAssassin/AppImageLauncher"
 
 # use as many system libraries as possible. (squashfuse and xdg-utils-cxx are missing)
-configure_args="-DUSE_SYSTEM_XZ=ON -DUSE_SYSTEM_LIBARCHIVE=ON -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_GTEST=ON"
+configure_args="-DUSE_SYSTEM_XZ=ON -DUSE_SYSTEM_LIBARCHIVE=ON -DUSE_SYSTEM_CURL=ON -DUSE_SYSTEM_BOOST=ON"
+
+# generate unix makefiles for use with make
+export CMAKE_GENERATOR="Unix Makefiles"
 
 do_fetch() {
 	# fetch the correct version of this project and all its submodules
@@ -20,23 +24,13 @@ do_fetch() {
 }
 
 do_build() {
-	git submodule update --init --recursive
 	cd ${cmake_builddir:=build}
-	pwd
-	rm -rf ./*
-	cmake .. -DCMAKE_INSTALL_PREFIX="/usr/local"
 
 	# see https://github.com/TheAssassin/AppImageLauncher/issues/251 for more details why this is required
-	make libappimage libappimageupdate libappimageupdate-qt
+	${make_cmd} ${makejobs} libappimage libappimageupdate libappimageupdate-qt
 	cmake .
 
-	make
-#	cp -pr ../CMakeLists.txt ./
-#	cd ..
-#	cmake -GNinja -DCMAKE_INSTALL_PREFIX="/usr/local"
-#	cp -pr ./build.ninja ${cmake_builddir:=build}
-#	cp -pr ./CMakeFiles/rules.ninja ${cmake_builddir:=build}/CMakeFiles
-#	cd ${cmake_builddir:=build}
+	${make_cmd} ${makejobs}
 }
 
 # install AppImageLauncher as interpreter for AppImages
