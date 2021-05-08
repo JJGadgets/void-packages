@@ -1,6 +1,6 @@
 # Template file for 'libvirt-python3'
 pkgname=libvirt-python3
-version=7.1.0
+version=7.3.0
 revision=1
 wrksrc="libvirt-python-${version}"
 build_style=python3-module
@@ -12,4 +12,4 @@ maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="LGPL-2.1-or-later"
 homepage="https://pypi.org/project/libvirt-python/"
 distfiles="https://libvirt.org/sources/python/libvirt-python-${version}.tar.gz"
-checksum=faafd31e407f9cb750a73349c007651ca8954ebd455e55b0a20e96de81c50037
+checksum=676c260ddb365120404e611a38c514045ef1af1a7fede15c1fc02d0f8241f696

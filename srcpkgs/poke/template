@@ -1,6 +1,6 @@
 # Template file for 'poke'
 pkgname=poke
-version=1.0
+version=1.2
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config"
@@ -10,8 +10,9 @@ short_desc="Extensible editor for structured binary data"
 maintainer="Duncaen <duncaen@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="http://www.jemarch.net/poke.html"
+changelog="http://www.jemarch.net/poke-${version}-relnotes.html"
 distfiles="${GNU_SITE}/poke/poke-${version}.tar.gz"
-checksum=de930b8700c0772b3c2cd0d0ca35f50fd3d77bdf82c6251eb516b49e8ca25b0a
+checksum=f61cf8da5b64c01a1359373725aad1ca257f35c1c9269e4d50dd0664183ddf62
 
 poke-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
