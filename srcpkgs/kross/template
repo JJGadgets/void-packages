@@ -1,9 +1,9 @@
 # Template file for 'kross'
 pkgname=kross
-version=5.81.0
+version=5.84.0
 revision=1
 build_style=cmake
-configure_args="-DBUILD_TESTING=OFF
+configure_args="
  -DMEINPROC5_EXECUTABLE=/usr/bin/meinproc5"
 hostmakedepends="kcoreaddons extra-cmake-modules gettext
  qt5-host-tools qt5-qmake python kdoctools-devel"
@@ -13,7 +13,7 @@ maintainer="John <me@johnnynator.dev>"
 license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/frameworks/kross"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/portingAids/${pkgname}-${version}.tar.xz"
-checksum=a3522ed07a9a33013639cb36484b4745af5025ef65efb10e291bc663b3f25a0a
+checksum=23b1cbe7cebad5a84ca5415b8f9d7459baa44a853533a9aef19f3813aac0e43b
 
 if [ "$XBPS_TARGET_NO_ATOMIC8" ]; then
 	makedepends+=" libatomic-devel"

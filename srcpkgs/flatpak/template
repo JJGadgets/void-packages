@@ -1,6 +1,6 @@
 # Template file for 'flatpak'
 pkgname=flatpak
-version=1.10.2
+version=1.11.1
 revision=1
 build_style=gnu-configure
 build_helper="gir"
@@ -22,7 +22,7 @@ license="LGPL-2.1-or-later"
 homepage="https://flatpak.org/"
 changelog="https://github.com/flatpak/flatpak/raw/master/NEWS"
 distfiles="https://github.com/flatpak/flatpak/releases/download/${version}/flatpak-${version}.tar.xz"
-checksum=db152739d072f8ff299e4e888d8963a1b4538da7b10e0b86525be438f2e1dde4
+checksum=a21ce530496a394227719dfbe4340c64b6ccc09e193c9a63d2856c83bbccbce5
 
 build_options="gir"
 build_options_default="gir"

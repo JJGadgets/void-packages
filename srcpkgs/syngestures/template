@@ -1,0 +1,16 @@
+# Template file for 'syngesture'
+pkgname=syngesture
+version=20210118
+revision=1
+#archs="i686 x86_64"
+wrksrc="syngesture-master"
+create_wrksrc=yes
+build_style=cargo
+makedepends="cargo evtest"
+depends="xf86-input-synaptics evtest"
+short_desc="syngestures is a utility providing multi-gesture support for various Linux touchpad/trackpad drivers implementing the Linux Multi-Touch Protocol, such as xf86-input-synaptics."
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="MIT"
+homepage="https://github.com/mqudsi/syngesture"
+distfiles="https://github.com/mqudsi/syngesture/archive/refs/heads/master.tar.gz"
+checksum="10e64a64b0b5233f2de25dc6b4fed2281e00c313b776949869c20bb8e3c43144"

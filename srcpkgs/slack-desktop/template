@@ -1,6 +1,6 @@
 # Template file for 'slack-desktop'
 pkgname=slack-desktop
-version=4.15.0
+version=4.18.0
 revision=1
 archs="x86_64"
 hostmakedepends="tar xz"
@@ -10,7 +10,7 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="custom:Proprietary"
 homepage="https://slack.com/"
 distfiles="https://slack-ssb-updates.global.ssl.fastly.net/linux_releases/${pkgname}-${version}-amd64.deb"
-checksum=31aa7cdcff637c642cfeb2786d4cbcc076f226048080c91d76c38e48283ef7f7
+checksum=701a8bd2a6c0e793b35092f147dd6639e66a1860ad300088a988f39d45ac0db6
 restricted=yes
 repository="nonfree"
 nopie=yes

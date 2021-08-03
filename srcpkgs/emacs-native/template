@@ -1,0 +1,66 @@
+do_build() {
+        make ${makejobs} -C nox
+        make ${makejobs} -C x11
+        make ${makejobs} -C gtk2
+        make ${makejobs} -C gtk3
+}
+
+do_install() {
+        make DESTDIR=$DESTDIR -C ${wrksrc}/nox install
+        rm -f ${DESTDIR}/usr/bin/ctags
+        rm -f ${DESTDIR}/usr/lib/systemd/user/emacs.service
+        rm -f ${DESTDIR}/usr/share/man/man1/ctags.1*
+        rm -f ${DESTDIR}/usr/share/info/info.info
+        rm -rf ${DESTDIR}/usr/share/applications
+        rm -rf ${DESTDIR}/usr/share/icons
+}
+
+emacs-common_package() {
+        short_desc+=" - common files"
+        pkg_install() {
+                vmove usr/share/emacs
+                vmove usr/share/man
+                vmove usr/share/info
+                rm -f ${PKGDESTDIR}/usr/share/info/info.info.gz
+        }
+}
+
+emacs-x11_package() {
+        depends="emacs-common-${version}_${revision}"
+        provides="emacs-${version}_${revision}"
+        replaces="emacs>=0"
+        short_desc+=" - X11 version"
+        pkg_install() {
+                make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/x11 install
+                rm -f ${PKGDESTDIR}/usr/bin/ctags
+                rm -rf ${PKGDESTDIR}/usr/share
+                rm -rf ${PKGDESTDIR}/usr/lib
+        }
+}
+
+emacs-gtk2_package() {
+        depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
+        provides="emacs-${version}_${revision}"
+        replaces="emacs>=0"
+        short_desc+=" - GTK+2 version"
+        pkg_install() {
+                make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/gtk2 install
+                rm -f ${PKGDESTDIR}/usr/bin/ctags
+                rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
+                rm -rf ${PKGDESTDIR}/usr/lib
+        }
+}
+
+emacs-gtk3_package() {
+        depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
+        provides="emacs-${version}_${revision}"
+        replaces="emacs>=0"
+        short_desc+=" - GTK+3 version"
+        pkg_install() {
+                make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/gtk3 install
+                rm -f ${PKGDESTDIR}/usr/bin/ctags
+                rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
+                rm -rf ${PKGDESTDIR}/usr/lib
+        }
+}
+

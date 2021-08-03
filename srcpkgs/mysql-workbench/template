@@ -1,0 +1,31 @@
+# Template file for 'mysql-workbench'
+pkgname=mysql-workbench
+version=8.0.25
+revision=1
+wrksrc=mysql-workbench
+create_wrksrc=yes
+build_style=cmake
+#configure_args=""
+#make_build_args=""
+#make_install_args=""
+#conf_files=""
+#make_dirs="/var/log/dir 0755 root root"
+#hostmakedepends=""
+makedepends="base-devel cmake autoconf automake pkg-config libtool libzip-devel libxml2-devel libsigc++-devel libglade-devel glu-devel MesaLib-devel libmysqlclient-devel mysql++-devel libuuid-devel pixman-devel pcre-devel pango-devel cairo-devel python-devel python-sqlite boost-devel sqlite-devel libgdal-devel gtk+3-devel gtkd-devel gtkmm-devel openssl-devel libsecret-devel proj-devel"
+depends="swig libtool openssl libzip libxml2 libsigc++ libglade glu mysql-client mysql++ libuuid pixman pcre pango cairo python boost python-sqlite libgdal libsecret proj"
+short_desc="MySQL Workbench"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://dev.mysql.com/downloads/workbench/"
+distfiles="https://cdn.mysql.com//Downloads/MySQLGUITools/mysql-workbench-community-8.0.25-src.tar.gz"
+checksum=c09b2a2895c4f195f378f108ecc881a135a4ba71b907bc8492900cc75517ec42
+
+#do_extract() {
+#	tar --strip-components=1 --one-top-level=${wrksrc} -xvf mysql-workbench-community-8.0.25-src.tar.gz
+#}
+
+post_extract() {
+	cd ${wrksrc}/mysql-workbench-community-8.0.25-src
+}
+
+

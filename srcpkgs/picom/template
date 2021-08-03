@@ -1,6 +1,6 @@
 # Template file for 'picom'
 pkgname=picom
-version=8.2
+version=20210605
 revision=1
 build_style=meson
 configure_args="-Dwith_docs=true"
@@ -12,8 +12,8 @@ depends="desktop-file-utils"
 short_desc="Lightweight compositor for X11 (previously a compton fork)"
 maintainer="Frank Steinborn <steinex@nognu.de>"
 license="MIT, MPL-2.0"
-homepage="https://github.com/yshui/picom/"
-distfiles="https://github.com/yshui/picom/archive/v${version}.tar.gz"
+homepage="https://github.com/jonaburg/picom/"
+distfiles="https://github.com/jonaburg/picom/archive/refs/heads/next.tar.gz"
 checksum=9d0c2533985e9670ff175e717a42b5bf1a2a00ccde5cac1e1009f5d6ee7912ec
 
 post_install() {

@@ -1,0 +1,19 @@
+# Template file for 'exwm-gnome-flashback'
+pkgname=exwm-gnome-flashback
+version=3.36
+revision=1
+archs="x86_64"
+#wrksrc=
+create_wrksrc=yes
+build_style=gnu-makefile
+hostmakedepends=""
+makedepends="git make base-devel automake"
+depends="gnome-flashback emacs"
+short_desc="Use GNOME Flashback to separate GNOME components and replace Mutter window manager with EXWM"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/WJCFerguson/exwm-gnome-flashback"
+
+do_fetch() {
+           git clone --depth=1 https://github.com/WJCFerguson/exwm-gnome-flashback ${wrksrc}
+}

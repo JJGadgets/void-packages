@@ -1,7 +1,9 @@
 # Template file for 'qt5'
 pkgname=qt5
 version=5.15.3+20210429
-revision=1
+# commit d42afef0e48a102334ecfda6a492286fb9fc5996
+# base repo: https://invent.kde.org/qt/qt/qt5
+revision=2
 build_style=meta
 hostmakedepends="cmake clang flex perl glib-devel pkg-config
  python re2c ruby which"
@@ -248,6 +250,7 @@ do_configure() {
 	opts+=" -skip qtdocgallery"
 	opts+=" -skip qtpim"
 	opts+=" -skip qtsystems"
+	opts+=" -skip qtspeech"
 	LDFLAGS+=" -Wl,--no-keep-memory"  # needs more than 8GB RAM else
 	if [ "$CROSS_BUILD" ]; then
 		spec=void-${XBPS_CROSS_TRIPLET}-g++
@@ -846,21 +849,6 @@ qt5-serialport_package() {
 	short_desc+=" - Serial port component"
 	pkg_install() {
 		_install_subpkg qtserialport
-	}
-}
-
-qt5-speech-devel_package() {
-	short_desc+=" - Speech component (development)"
-	depends="qt5-speech-${version}_${revision} qt5-devel-${version}_${revision}"
-	pkg_install() {
-		_install_devel qtspeech
-	}
-}
-
-qt5-speech_package() {
-	short_desc+=" - Speech component"
-	pkg_install() {
-		_install_subpkg qtspeech
 	}
 }
 
