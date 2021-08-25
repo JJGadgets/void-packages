@@ -1,0 +1,54 @@
+=> xbps-src: updating repositories for host (x86_64)...
+[*] Updating repository `https://alpha.de.repo.voidlinux.org/current/x86_64-repodata' ...
+[*] Updating repository `https://alpha.de.repo.voidlinux.org/current/nonfree/x86_64-repodata' ...
+[*] Updating repository `https://alpha.de.repo.voidlinux.org/current/debug/x86_64-repodata' ...
+[*] Updating repository `https://alpha.de.repo.voidlinux.org/current/multilib/x86_64-repodata' ...
+[*] Updating repository `https://alpha.de.repo.voidlinux.org/current/multilib/nonfree/x86_64-repodata' ...
+=> xbps-src: updating software in / masterdir...
+=> xbps-src: cleaning up / masterdir...
+=> linux5.13-xanmod-cacule-5.13.9_1: removing autodeps, please wait...
+=> linux5.13-xanmod-cacule-5.13.9_1: building for x86_64...
+   [host] tar-1.34_2: not found
+   [host] xz-5.2.5_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] lz4-1.9.3_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] bc-gh-4.0.2_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] elfutils-devel-0.185_1: not found
+   [host] flex-2.6.4_3: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] gmp-devel-6.2.1_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] kmod-27_3: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] libmpc-devel-1.1.0_2: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] openssl-devel-1.1.1k_1: not found
+   [host] perl-5.34.0_1: not found
+   [host] uboot-mkimage-2021.07_1: not found
+   [host] cpio-2.13_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] pahole-1.21_1: found (https://alpha.de.repo.voidlinux.org/current)
+   [host] python3-3.9.6_2: not found
+=> linux5.13-xanmod-cacule-5.13.9_1: installing host dependencies: xz-5.2.5_1 lz4-1.9.3_1 bc-gh-4.0.2_1 flex-2.6.4_3 gmp-devel-6.2.1_1 kmod-27_3 libmpc-devel-1.1.0_2 cpio-2.13_1 pahole-1.21_1 tar-1.34_2 elfutils-devel-0.185_1 openssl-devel-1.1.1k_1 perl-5.34.0_1 uboot-mkimage-2021.07_1 python3-3.9.6_2 ...
+=> linux5.13-xanmod-cacule-5.13.9_1: running do-patch hook: 00-patches ...
+=> linux5.13-xanmod-cacule-5.13.9_1: patching: 5.13.4-S0ix-AMD-all-in-one.patch.
+Hmm...  Looks like a unified diff to me...
+The text leading up to this was:
+--------------------------
+|diff -Naur linux-5.13.4/drivers/acpi/device_pm.c linux-5.13.4-S0ix/drivers/acpi/device_pm.c
+|--- linux-5.13.4/drivers/acpi/device_pm.c	2021-07-20 16:00:42.000000000 +0200
+|+++ linux-5.13.4-S0ix/drivers/acpi/device_pm.c	2021-07-21 15:51:14.645501603 +0200
+--------------------------
+patching file drivers/acpi/device_pm.c
+Using Plan A...
+Hunk #1 succeeded at 1338 with fuzz 3.
+Hmm...  The next patch looks like a unified diff to me...
+The text leading up to this was:
+--------------------------
+|diff -Naur linux-5.13.4/drivers/acpi/internal.h linux-5.13.4-S0ix/drivers/acpi/internal.h
+|--- linux-5.13.4/drivers/acpi/internal.h	2021-07-20 16:00:42.000000000 +0200
+|+++ linux-5.13.4-S0ix/drivers/acpi/internal.h	2021-07-21 15:51:14.645501603 +0200
+--------------------------
+patching file drivers/acpi/internal.h
+Using Plan A...
+=> ERROR: linux5.13-xanmod-cacule-5.13.9_1: do-patch_00-patches: 'patch -sl ${_args} -i ${_patch} 2> /dev/null' exited with 2
+=> ERROR:   in _process_patch() at common/hooks/do-patch/00-patches.sh:34
+=> ERROR:   in hook() at common/hooks/do-patch/00-patches.sh:51
+=> ERROR:   in run_func() at common/xbps-src/shutils/common.sh:21
+=> ERROR:   in run_pkg_hooks() at common/xbps-src/shutils/common.sh:245
+=> ERROR:   in run_step() at common/xbps-src/shutils/common.sh:71
+=> ERROR:   in main() at common/xbps-src/libexec/xbps-src-dopatch.sh:33
