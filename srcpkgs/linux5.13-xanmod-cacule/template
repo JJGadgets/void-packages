@@ -1,6 +1,6 @@
 # Template file for 'linux5.13-xanmod-cacule'
 pkgname=linux5.13-xanmod-cacule
-version=5.13.4
+version=5.13.9
 revision=1
 _xanmod=1
 wrksrc="linux-${version}-xanmod${_xanmod}-cacule"
@@ -9,7 +9,7 @@ maintainer="MarcoAPC <marcoaureliopc@gmail.com>"
 license="GPL-2.0-only"
 homepage="http://www.xanmod.org/"
 distfiles="https://github.com/xanmod/linux/archive/${version}-xanmod${_xanmod}-cacule.tar.gz"
-checksum=81079dd51a41b98ccbf01daa468603ff721dda1ee995011940822d5e7976e90e
+checksum=9c3d42001226c9b90cd7e1338c9da8aba55e3d5adf22954adbf3c22ccf0f6818
 python_version=3
 patch_args="-Np1 --verbose"
 
@@ -23,7 +23,7 @@ noshlibprovides=yes
 preserve=yes
 
 hostmakedepends="tar xz lz4 bc-gh elfutils-devel flex gmp-devel kmod libmpc-devel
- openssl-devel perl uboot-mkimage cpio pahole python3 zstd"
+ openssl-devel perl uboot-mkimage cpio pahole python3"
 
 _kernver="${version}-xanmod${_xanmod}-cacule_${revision}"
 triggers="kernel-hooks"
@@ -281,13 +281,13 @@ do_install() {
 
 	# Remove unneeded architectures
 	case "$arch" in
-		i386|x86_64) _args="arm* p*";;
-		arm|arm64) _args="x86* p*";;
-		powerpc) _args="arm* x86* parisc";;
-		mips) _args="mips* p*";;
+		i386|x86_64) _args="arm* m* p*";;
+		arm|arm64) _args="x86* m* p*";;
+		powerpc) _args="arm* m* x86* parisc";;
+		mips) _args="arm* x86* p*";;
 	esac
 	for arch in alpha avr32 blackfin cris frv h8300 \
-		ia64 m* s* um v850 xtensa ${_args}; do
+		ia64 s* um v850 xtensa ${_args}; do
 		rm -rf ${hdrdest}/arch/${arch}
 	done
 	# Keep arch/x86/ras/Kconfig as it is needed by drivers/ras/Kconfig

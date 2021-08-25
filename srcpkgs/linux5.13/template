@@ -43,6 +43,9 @@ mutable_files="
  /usr/lib/modules/${_kernver}/modules.alias.bin
  /usr/lib/modules/${_kernver}/modules.devname"
 
+# determine threads
+_threads=$(( $(nproc) * 3 / 2 ))
+
 # reproducible build
 export KBUILD_BUILD_TIMESTAMP=${SOURCE_DATE_EPOCH:-0}
 export KBUILD_BUILD_USER=voidlinux
@@ -76,11 +79,11 @@ do_configure() {
 	if [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom ]; then
 		msg_normal "Detected a custom .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom .config
-		make ${makejobs} ARCH=$arch ${_cross} oldconfig
+		make ${makejobs} ARCH=$arch ${_cross} -j${_threads} oldconfig
 	elif [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig ]; then
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
-		make ${makejobs} ARCH=$arch ${_cross} oldconfig
+		make ${makejobs} ARCH=$arch ${_cross} -j${_threads} oldconfig
 	fi
 	# Always use our revision to CONFIG_LOCALVERSION to match our pkg version.
 	sed -i -e "s|^\(CONFIG_LOCALVERSION=\).*|\1\"_${revision}\"|" .config
@@ -98,8 +101,8 @@ do_build() {
 		mips*) _args="uImage modules dtbs"; arch=mips;;
 	esac
 	export LDFLAGS=
-	make ARCH=$arch ${_cross} ${makejobs} prepare
-	make ARCH=$arch ${_cross} ${makejobs} ${_args}
+	make ARCH=$arch ${_cross} ${makejobs} -j${_threads} prepare
+	make ARCH=$arch ${_cross} ${makejobs} -j${_threads} ${_args}
 }
 
 do_install() {
@@ -118,7 +121,7 @@ do_install() {
 	sed -i '2iexit 0' scripts/depmod.sh
 
 	# Install kernel, firmware and modules
-	make ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} ${_cross} modules_install
+	make ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} ${_cross} -j${_threads} modules_install
 
 	hdrdest=${DESTDIR}/usr/src/kernel-headers-${_kernver}
 
@@ -131,11 +134,11 @@ do_install() {
 			;;
 		arm)
 			vinstall arch/arm/boot/zImage 644 boot
-			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} -j${_threads} dtbs_install
 			;;
 		arm64)
 			vinstall arch/arm64/boot/Image 644 boot vmlinux-${_kernver}
-			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} -j${_threads} dtbs_install
 			;;
 		powerpc)
 			# zImage on powerpc is useless as it won't load initramfs
@@ -145,7 +148,7 @@ do_install() {
 			;;
 		mips)
 			vinstall arch/mips/boot/uImage.bin 644 boot uImage-${_kernver}
-			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} ${_cross} -j${_threads} dtbs_install
 			;;
 	esac
 
@@ -189,7 +192,7 @@ do_install() {
 	# if generated files from the scripts/ directory need to be included,
 	# they need to be copied to ${hdrdest} before this step
 	if [ "$CROSS_BUILD" ]; then
-		make ${makejobs} ARCH=${subarch:-$arch} ${_cross} _mrproper_scripts
+		make ${makejobs} ARCH=${subarch:-$arch} ${_cross} -j${_threads} _mrproper_scripts 
 		# remove host specific objects as well
 		find scripts -name '*.o' -delete
 	fi
