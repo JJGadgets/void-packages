@@ -3182,7 +3182,7 @@ libgloox.so.17 gloox-1.0.20_1
 libgsmsd.so.8 gammu-smsd-1.39.0_1
 libGammu.so.8 gammu-1.39.0_1
 libz3.so z3-4.6.0_2
-libngspice.so.0 ngspice-27_2
+libngspice.so.0 ngspice-35_1
 libvulkan.so.1 vulkan-loader-1.0.57.0_1
 libembb_mtapi_cpp.so embb-1.0.0_3
 libembb_mtapi_c.so embb-1.0.0_3
@@ -3863,7 +3863,7 @@ libcaribou.so.0 libcaribou-0.4.21_3
 libtinyclipboard.so.1 tinyclipboard-16.01_1
 libcbor.so.0.8 libcbor-0.8.0_1
 libfido2.so.1 libfido2-1.6.0_2
-libjanet.so.1.16 janet-1.16.0_1
+libjanet.so.1.17 janet-1.17.0_1
 libOpenImageDenoise.so.1 openimagedenoise-1.3.0_1
 libcbang0.so cbang-1.6.0_3
 libblosc.so.1 c-blosc-1.17.1_1
