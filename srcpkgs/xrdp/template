@@ -1,22 +1,20 @@
 # Template file for 'xrdp'
 pkgname=xrdp
-version=
+version=0.9.17
 revision=1
-#archs="i686 x86_64"
-#wrksrc=
-#create_wrksrc=yes
+archs=x86_64
+wrksrc=xrdp-${version}
 build_style=gnu-configure
-#configure_args=""
-#make_build_args=""
-#make_install_args=""
-#conf_files=""
-#make_dirs="/var/log/dir 0755 root root"
-hostmakedepends=""
-makedepends=""
-depends=""
-short_desc=""
+hostmakedepends="pkg-config autoconf automake libtool make git gcc which nasm pam-base"
+makedepends="openssl-devel pam-devel libX11-devel libXfixes-devel libXrandr-devel"
+depends="fuse libjpeg-turbo opus openssl libX11 libXfixes libXrandr xorgxrdp"
+short_desc="An open source RDP server"
 maintainer="JJGadgets <jjgadgetsios@gmail.com>"
-license="GPL-3.0-or-later"
-homepage=""
-distfiles=""
-checksum=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadb
+license="Apache 2.0"
+homepage="https://github.com/neutrinolabs/xrdp"
+distfiles="https://github.com/neutrinolabs/xrdp/releases/download/v${version}/xrdp-${version}.tar.gz"
+checksum=56b913dd6d0f15b60f7a53963b30ad905f00669c91701db35bb4410be262a77e
+
+pre_configure() {
+	./bootstrap
+}
