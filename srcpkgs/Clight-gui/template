@@ -1,0 +1,31 @@
+# Template file for 'clight-gui'
+pkgname=Clight-gui
+version=20210815
+revision=1
+#archs="x86_64"
+wrksrc=clight-gui-main
+build_style=cmake
+configure_args="-S ../src -B ../build"
+make_cmd=make
+#hostmakedepends="pkg-config cmake git"
+makedepends="cmake git qt5-devel qt5-tools qt5-charts-devel ninja"
+depends="Clight qt5 qt5-charts"
+short_desc="Qt GUI for clight"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/nullobsi/clight-gui"
+distfiles="https://github.com/nullobsi/clight-gui/archive/main.tar.gz"
+checksum=9a6b1980f1fec8690b9581f1a308c5702ad8426f983912ac2b3b1179c0ac8401
+
+do_configure() {
+	echo "Skipped do_configure()"
+#	cmake -S src -B build
+}
+
+do_build() {
+	cd /builddir/clight-gui-main
+	cmake -S src -B build
+	cd /builddir/clight-gui-main/build
+	make
+	make install
+}

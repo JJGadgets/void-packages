@@ -1,0 +1,18 @@
+# Template file for 'toolbox'
+pkgname=toolbox
+version=0.0.99.2
+revision=1
+archs="x86_64"
+#wrksrc=
+#create_wrksrc=yes
+build_style=meson
+hostmakedepends="meson go-md2man go ninja pkg-config"
+makedepends=""
+depends="podman flatpak"
+short_desc="Tool for containerized command line environments on Linux"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="Apache-2.0"
+homepage="https://github.com/containers/toolbox"
+distfiles="https://github.com/containers/toolbox/archive/${version}.tar.gz"
+checksum=20fd59c548945ca3d6f7d79f279ddaa68d24d5fa94f765f06a0d71b92449a0ef
+nopie=yes

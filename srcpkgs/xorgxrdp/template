@@ -1,0 +1,16 @@
+# Template file for 'xorgxrdp'
+pkgname=xorgxrdp
+version=0.2.17
+revision=1
+archs="x86_64"
+wrksrc=${pkgname}-${version}
+build_style=gnu-configure
+hostmakedepends="xrdp gcc git autoconf automake libtool pkg-config nasm"
+makedepends="xorg-server-devel"
+depends="libepoxy xorg-server xrdp"
+short_desc="Xorg drivers for xrdp"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="X11 License"
+homepage="https://github.com/neutrinolabs/xorgxrdp"
+distfiles="https://github.com/neutrinolabs/${pkgname}/releases/download/v${version}/${pkgname}-${version}.tar.gz"
+checksum=de6fb593edfbaead1d47c663fc9c04bdad7e98293c0dca2bdc10727c54b24ced
