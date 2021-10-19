@@ -42,6 +42,7 @@ build_options_default="colord cups gir broadway wayland x11"
 do_check() {
 	# TODO: don't pass fully
 	xvfb-run dbus-run-session make ${makejobs} check
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 }
 
 post_install() {

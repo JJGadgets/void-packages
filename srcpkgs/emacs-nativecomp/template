@@ -1,35 +1,27 @@
 # Template file for 'emacs-nativecomp'
 # pinned to git master
 pkgname=emacs-nativecomp
-version=20210606
+version=20211005
 revision=1
-wrksrc="emacs-master"
+wrksrc="emacs-pgtk-nativecomp"
 build_style=gnu-configure
 configure_args="--with-file-notification=inotify --with-modules
- --with-x-toolkit=gtk3 --with-native-compilation --with-xwidgets 
- $(vopt_with gconf) $(vopt_with m17n m17n-flt) $(vopt_with gmp libgmp)
+ --with-x-toolkit=gtk3 --with-pgtk --with-native-compilation --with-xwidgets --without-gconf --without-gsettings
+ $(vopt_with m17n m17n-flt) $(vopt_with gmp libgmp)
  $(vopt_with jpeg) $(vopt_with tiff) $(vopt_with gif) $(vopt_with png)
  $(vopt_with xpm) $(vopt_with svg rsvg) $(vopt_with imagemagick)
  $(vopt_with xml xml2) $(vopt_with gnutls) $(vopt_with sound) 
  $(vopt_with json) $(vopt_with harfbuzz) $(vopt_with cairo)
  $(vopt_with dbus)"
 hostmakedepends="pkg-config tar automake texinfo git"
-makedepends="ncurses-devel libXaw-devel libXaw3d-devel librsvg-devel libXfixes-devel libXrandr-devel lcms2-devel libXinerama-devel hicolor-icon-theme
- dbus-devel acl-devel libgccjit libmagick-devel git libmagick $(vopt_if gconf GConf-devel)
- $(vopt_if gsettings gsettings-desktop-schemas-devel) $(vopt_if jpeg libjpeg-turbo-devel)
- $(vopt_if tiff tiff-devel) $(vopt_if gif giflib-devel) $(vopt_if png libpng-devel)
- $(vopt_if xpm libXpm-devel) $(vopt_if svg librsvg-devel) $(vopt_if gnutls gnutls-devel)
- $(vopt_if imagemagick libmagick-devel) $(vopt_if xml libxml2-devel)
- $(vopt_if sound alsa-lib-devel) $(vopt_if m17n m17n-lib-devel)
- $(vopt_if json jansson-devel) $(vopt_if harfbuzz harfbuzz-devel)
- $(vopt_if cairo cairo-devel) $(vopt_if gmp gmp-devel)"
+makedepends="webkit2gtk-devel gtk+3-devel ncurses-devel libXaw-devel libXaw3d-devel librsvg-devel libXfixes-devel libXrandr-devel lcms2-devel libXinerama-devel hicolor-icon-theme dbus-devel acl-devel libgccjit libmagick-devel git libmagick $(vopt_if tiff tiff-devel) $(vopt_if gif giflib-devel) $(vopt_if png libpng-devel) $(vopt_if xpm libXpm-devel) $(vopt_if svg librsvg-devel) $(vopt_if gnutls gnutls-devel) $(vopt_if imagemagick libmagick-devel) $(vopt_if xml libxml2-devel) $(vopt_if sound alsa-lib-devel) $(vopt_if m17n m17n-lib-devel) $(vopt_if json jansson-devel) $(vopt_if harfbuzz harfbuzz-devel) $(vopt_if cairo cairo-devel) $(vopt_if gmp gmp-devel)"
 depends="emacs-common-${version}_${revision} libgccjit dbus libXinerama lcms2 libXrandr libXfixes librsvg libXaw3d"
 short_desc="GNU Emacs editor Native-comp"
-maintainer="lane-brain <lane@mailbox.org>"
+maintainer="JJGadgets <jj@jjgadgets.tech>"
 license="GPL-3.0-or-later"
-homepage="http://www.gnu.org/software/emacs/"
-distfiles="https://git.savannah.gnu.org/cgit/emacs.git/snapshot/emacs-master.tar.gz"
-checksum=26d5f23641401251a9ef57eb01cd924bd8e596cab9e17014cf816f39a41f24a0
+homepage="https://github.com/flatwhatson/emacs"
+distfiles="https://github.com/flatwhatson/emacs/archive/pgtk-nativecomp.tar.gz"
+checksum=17ea60194274620c86d481b9b9c6ff358cd73c687e4a2085e8f4e85d1003ac0c
 provides="emacs-${version}_${revision}"
 replaces="emacs>=0"   
 
@@ -37,10 +29,10 @@ nocross=yes
 nopie=yes
 
 # Package build options
-build_options="gconf jpeg tiff gif png xpm svg xml imagemagick gnutls sound 
- json harfbuzz cairo gmp fastboot lto dbus m17n dbus"
-build_options_default="gconf jpeg tiff gif png xpm svg xml imagemagick gnutls sound 
- json harfbuzz cairo gmp fastboot lto dbus m17n dbus"
+build_options="jpeg tiff gif png xpm svg xml imagemagick gnutls sound
+ json harfbuzz cairo gmp fastboot dbus m17n dbus xml"
+build_options_default="jpeg tiff gif png xpm svg xml imagemagick gnutls sound
+ json harfbuzz cairo gmp fastboot dbus m17n dbus"
 desc_option_lto="Enable Link Time Optimization for build"
 desc_option_xpm="Enable support for XPM images"
 desc_option_sound="Enable support for sound"
