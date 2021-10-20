@@ -1,6 +1,6 @@
 # Template file for 'linux5.14-xanmod-cacule'
 pkgname=linux5.14-xanmod-cacule
-version=5.14.9
+version=5.14.13
 revision=1
 _xanmod=1
 wrksrc="linux-${version}-xanmod${_xanmod}-cacule"
@@ -9,7 +9,7 @@ maintainer="MarcoAPC <marcoaureliopc@gmail.com>"
 license="GPL-2.0-only"
 homepage="http://www.xanmod.org/"
 distfiles="https://github.com/xanmod/linux/archive/${version}-xanmod${_xanmod}-cacule.tar.gz"
-checksum=cc1d3358a04e44f81d199784d53b5ae8a4a55d2413387499aa626438c12b0b68
+checksum=0aadf2e32236c1478a6029344b58ee3ef7f6470dcc90e94f9f4621dadfff3344
 python_version=3
 patch_args="-Np1"
 
