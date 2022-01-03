@@ -2,7 +2,7 @@
 # This package should be updated together with qemu-user-static
 pkgname=qemu
 version=6.1.0
-revision=1
+revision=3
 build_style=configure
 hostmakedepends="gettext pkg-config perl python3 automake libtool flex
  python3-Sphinx python3-sphinx_rtd_theme texinfo ninja"
@@ -20,7 +20,7 @@ makedepends="libpng-devel libjpeg-turbo-devel pixman-devel snappy-devel
  $(vopt_if spice 'pcsclite-devel')
  $(vopt_if jack 'jack-devel')"
 short_desc="Open Source Processor Emulator"
-maintainer="Helmut Pozimski <helmut@pozimski.eu>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-2.0-or-later, LGPL-2.1-or-later"
 homepage="https://www.qemu.org"
 distfiles="https://wiki.qemu.org/download/qemu-${version}.tar.bz2"
@@ -69,7 +69,7 @@ do_configure() {
 		want_sdl="--enable-sdl"
 		audio_sdl=",sdl"
 	fi
-	if [ $"build_option_jack" ]; then
+	if [ "$build_option_jack" ]; then
 		audio_jack=",jack"
 	fi
 

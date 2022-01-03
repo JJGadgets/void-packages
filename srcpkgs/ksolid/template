@@ -1,6 +1,6 @@
 # Template file for 'ksolid'
 pkgname=ksolid
-version=5.85.0
+version=5.89.0
 revision=1
 wrksrc="${pkgname#k}-${version}"
 build_style=cmake
@@ -13,7 +13,7 @@ maintainer="John <me@johnnynator.dev>"
 license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/frameworks/solid"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname#k}-${version}.tar.xz"
-checksum=a7e416de2c3d699fbaea1b8395be1a0ee50f0262303d47dc6b491ef0f36b8d3d
+checksum=23c1e8d852de64a7bf2cf87b5eb3e44dd044b39c0f99e762bb6e00545e6bc8bf
 
 libksolid_package() {
 	short_desc+=" - runtime library"
