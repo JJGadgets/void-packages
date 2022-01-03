@@ -1,0 +1,32 @@
+# Template file for 'ananicy'
+pkgname=ananicy
+version=20211011
+revision=1
+wrksrc=Ananicy-master
+build_style=gnu-makefile
+hostmakedepends="make util-linux"
+depends="python3 runit"
+short_desc="Another auto nice daemon, with community rules support"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/Nefelim4ag/Ananicy"
+distfiles="https://github.com/Nefelim4ag/Ananicy/archive/master.tar.gz"
+checksum=ab07eea8e341b599ffec840c92ca45bdd09a064f950143438fad231716d48370
+make_install_args="PREFIX=${DESTDIR}"
+
+post_install() {
+	rm -rf /lib/systemd/system/ananicy.service
+	mkdir -m 755 -p ${DESTDIR}/etc/sv/ananicy
+	cat <<-EOF > /etc/sv/ananicy/run
+	#!/bin/sh
+	exec /usr/bin/ananicy start
+EOF
+	cat <<-EOF > /etc/sv/ananicy/start
+	#!/bin/sh
+	exec /usr/bin/sysctl -e kernel.sched_autogroup_enabled=0
+EOF
+	cat <<-EOF > /etc/sv/ananicy/finish
+	#!/bin/sh
+	exec /usr/bin/sysctl -e kernel.sched_autogroup_enabled=1
+EOF
+}

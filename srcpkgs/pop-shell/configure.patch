@@ -1,0 +1,9 @@
+--- ./scripts/configure.sh.orig	2021-10-24 14:23:34.000000000 +0000
++++ ./scripts/configure.sh	2021-10-25 05:07:44.542615098 +0000
+@@ -112,5 +112,4 @@
+     gnome-extensions enable $(gnome-extensions list | grep native-window)
+ fi
+ 
+-# Workspaces spanning displays works better with Pop Shell
+-dconf write /org/gnome/mutter/workspaces-only-on-primary false
++

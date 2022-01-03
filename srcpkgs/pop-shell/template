@@ -1,0 +1,28 @@
+# Template file for 'pop-shell'
+pkgname=pop-shell
+version=20211018
+revision=1
+_commit=d39f185ee16cb024f86163ea2f7d24c7e15b695d
+wrksrc=shell-${_commit}
+build_style=gnu-makefile
+make_install_target=local-install
+hostmakedepends="make nodejs gnome-shell"
+depends="gnome-shell"
+short_desc="Pop!_OS Shell"
+maintainer="JJGadgets <jjgadgetsios@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/pop-os/shell"
+distfiles="https://github.com/pop-os/shell/archive/${_commit}.tar.gz"
+checksum=8e8e9c0dc048727c9ff121a6f17e05348d60a7a4c3da2b92768c27997fcf2169
+patch_args="-Np1"
+
+post_extract() {
+        /usr/bin/npm install -g typescript
+}
+
+pre_install() {
+        : ${make_cmd:=make}
+        : ${make_install_target:=install}
+
+        ${make_cmd} STRIP=true PREFIX=/usr DESTDIR=${DESTDIR} ${make_install_args} ${make_install_target}
+}
