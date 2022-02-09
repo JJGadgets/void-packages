@@ -6,15 +6,15 @@ build_style=gnu-configure
 # configure checks sys.version[:3] for Python versioning, so 3.10 becomes 3.1;
 # until this is fixed upstream, manually define am_cv_python_version to circumvent
 configure_args="--without-selinux --without-semanage --without-libwbclient
- --disable-cifs-idmap-plugin --without-samba --with-os=fedora
+ --disable-cifs-idmap-plugin --with-os=fedora
  --with-test-dir=/dev/shm --with-python3-bindings --with-pid-path=/run
  --with-sudo-lib-path=/usr/lib/sssd --without-python2-bindings
  am_cv_python_version=${py3_ver}"
-hostmakedepends="pkg-config nscd bind xmlcatmgr docbook-xsl"
+hostmakedepends="pkg-config nscd bind xmlcatmgr docbook-xsl samba-libs"
 makedepends="pam-devel popt-devel talloc-devel tdb-devel tevent-devel ldb-devel
  ding-libs-devel libldap-devel mit-krb5-devel c-ares-devel glib-devel
  libxslt-devel nss-devel libnfsidmap-devel http-parser-devel p11-kit-devel
- jansson-devel python3-devel libcurl-devel cmocka-devel check-devel"
+ jansson-devel python3-devel libcurl-devel cmocka-devel check-devel samba-devel"
 make_dirs="/var/lib/sss/db 0700 root root
  /var/lib/sss/secrets 0700 root root
  /var/lib/sss/pubconf/krb5.include.d 0700 root root
