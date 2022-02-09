@@ -1,9 +1,9 @@
 # Template file for 'kopia'
 pkgname=kopia
-version=0.8.4
-revision=2
+version=0.10.4
+revision=1
 build_style=go
-build_helper="qemu"
+build_helper=qemu
 go_import_path=github.com/kopia/kopia
 go_ldflags="-X ${go_import_path}/repo.BuildVersion=${version}
  -X '${go_import_path}/repo.BuildInfo=Void Linux'"
@@ -12,7 +12,7 @@ maintainer="Daniel Eyßer <daniel.eysser@gmail.com>"
 license="Apache-2.0"
 homepage="https://kopia.io/"
 distfiles="https://github.com/kopia/kopia/archive/v${version}.tar.gz"
-checksum=8e2663546fb426faacb4dd9425cdbba4fa2e8ca5df0aac0545d216c8e57d40ef
+checksum=95921c9ea6036ede0d6007e2d630bb3cf04e21ffb65b2ce580ac9201ea569401
 
 post_install() {
 	for shell in bash zsh; do
