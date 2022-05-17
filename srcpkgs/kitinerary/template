@@ -1,6 +1,6 @@
 # Template file for 'kitinerary'
 pkgname=kitinerary
-version=21.12.0
+version=22.04.1
 revision=1
 build_style=cmake
 hostmakedepends="extra-cmake-modules gettext kcoreaddons pkg-config qt5-host-tools qt5-qmake qt5-tools-devel"
@@ -10,8 +10,9 @@ short_desc="Data model and extraction system for travel reservation information"
 maintainer="Louis Dupré Bertoni <contact@louisdb.xyz>"
 license="LGPL-2.1-or-later"
 homepage="https://kontact.kde.org"
+changelog="https://kde.org/announcements/changelogs/gear/${version}/#kitinerary"
 distfiles="${KDE_SITE}/release-service/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=33f19570aaabe9340bb6f8c8d37e33d1c943644eee5275b9ffc59dfa64dcef37
+checksum=306a74c9be1b37dbba7e6876d81426b01af52f80ef139087949042bcc6956b7a
 
 kitinerary-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"

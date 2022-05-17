@@ -1,6 +1,6 @@
 # Template file for 'python3-quart'
 pkgname=python3-quart
-version=0.16.2
+version=0.17.0
 revision=1
 wrksrc="${pkgname#*-}-${version}"
 build_style=python3-pep517
@@ -15,7 +15,7 @@ license="MIT"
 homepage="https://gitlab.com/pgjones/quart"
 changelog="https://gitlab.com/pgjones/quart/-/blob/master/CHANGELOG.rst"
 distfiles="${homepage}/-/archive/${version}/${pkgname#*-}-${version}.tar.gz"
-checksum=7b3d51c8c9b0faa75c92b019999539de6cf827edb57f0391347e8c0b7b399334
+checksum=1f879256b09daa4f7e9a141e90746f11103ce1f3a386f9480709e1d982768a9a
 
 do_check() {
 	# Tests require dist-info on the package, which is only in the wheel.

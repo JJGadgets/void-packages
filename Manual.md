@@ -42,6 +42,7 @@ packages for XBPS, the `Void Linux` native packaging system.
 	* [Go packages](#pkgs_go)
 	* [Haskell packages](#pkgs_haskell)
 	* [Font packages](#pkgs_font)
+	* [Renaming a package](#pkg_rename)
 	* [Removing a package](#pkg_remove)
 	* [XBPS Triggers](#xbps_triggers)
 		* [appstream-cache](#triggers_appstream_cache)
@@ -61,6 +62,7 @@ packages for XBPS, the `Void Linux` native packaging system.
 		* [kernel-hooks](#triggers_kernel_hooks)
 		* [mimedb](#triggers_mimedb)
 		* [mkdirs](#triggers_mkdirs)
+		* [openjdk-profile](#triggers_openjdk_profile)
 		* [pango-modules](#triggers_pango_module)
 		* [pycompile](#triggers_pycompile)
 		* [register-shell](#triggers_register_shell)
@@ -528,6 +530,7 @@ Example:
   | UBUNTU_SITE      | http://archive.ubuntu.com/ubuntu/pool           |
   | XORG_SITE        | https://www.x.org/releases/individual            |
   | KDE_SITE         | https://download.kde.org/stable                 |
+  | VIDEOLAN_SITE    | https://download.videolan.org/pub/videolan      |
 
 - `checksum` The `sha256` digests matching `${distfiles}`. Multiple files can be
 separated by blanks. Please note that the order must be the same than
@@ -598,12 +601,17 @@ path of the Python wheel produced by the build phase that will be installed; whe
 `python-pep517` build style will look for a wheel matching the package name and version in the
 current directory with respect to the install.
 
+- `make_check_pre` The expression in front of `${make_cmd}`. This can be used for wrapper commands
+or for setting environment variables for the check command. By default empty.
+
 - `patch_args` The arguments to be passed in to the `patch(1)` command when applying
 patches to the package sources during `do_patch()`. Patches are stored in
 `srcpkgs/<pkgname>/patches` and must be in `-p1` format. By default set to `-Np1`.
 
 - `disable_parallel_build` If set the package won't be built in parallel
-and `XBPS_MAKEJOBS` has no effect.
+and `XBPS_MAKEJOBS` will be set to 1. If a package does not work well with `XBPS_MAKEJOBS`
+but still has a mechanism to build in parallel, set `disable_parallel_build` and
+use `XBPS_ORIG_MAKEJOBS` (which holds the original value of `XBPS_MAKEJOBS`) in the template.
 
 - `make_check` Sets the cases in which the `check` phase is run.
 This option has to be accompanied by a comment explaining why the tests fail.
@@ -750,6 +758,9 @@ built for, available architectures can be found under `common/cross-profiles`.
 In general, `archs` should only be set if the upstream software explicitly targets
 certain architectures or there is a compelling reason why the software should not be
 available on some supported architectures.
+Prepending pattern with tilde means disallowing build on indicated archs.
+First matching pattern is taken to allow/deny build. When no pattern matches,
+package is build if last pattern includes tilde.
 Examples:
 
 	```
@@ -1094,7 +1105,13 @@ still be passed in if it's a GNU configure script.
 
 - `post_build()` Actions to execute after `do_build()`.
 
-- `pre_install()` Actions to execute after `post_build()`.
+- `pre_check()` Actions to execute after `post_build()`.
+
+- `do_check()` Actions to execute to run checks for the package.
+
+- `post_check()` Actions to execute after `do_check()`.
+
+- `pre_install()` Actions to execute after `post_check()`.
 
 - `do_install()` Actions to execute to install the package files into the `fake destdir`.
 
@@ -1656,6 +1673,18 @@ cache during the install/removal of the package
 - `font_dirs`: which should be set to the directory where the package
 installs its fonts
 
+<a id="pkg_rename"></a>
+### Renaming a package
+
+- Create empty package of old name, depending on new package. This is
+necessary to provide updates to systems where old package is already
+installed. This should be a subpackage of new one, except when version
+number of new package decreased: then create a separate template using
+old version and increased revision.
+- Edit references to package in other templates and common/shlibs.
+- Don't set `replaces=`, it can result in removing both packages from
+systems by xbps.
+
 <a id="pkg_remove"></a>
 ### Removing a package
 
@@ -1971,6 +2000,13 @@ During removal it will delete the directory using `rmdir`.
 
 To include this trigger use the `make_dirs` variable, as the trigger won't do anything
 unless it is defined.
+
+<a id="triggers_openjdk_profile"></a>
+#### openjdk-profile
+
+The openjdk-profile trigger is responsible for creating an entry in /etc/profile.d that
+sets the `JAVA_HOME` environment variable to the currently-selected alternative for
+`/usr/bin/java` on installation. This trigger must be manually requested.
 
 <a id="triggers_pango_module"></a>
 #### pango-modules

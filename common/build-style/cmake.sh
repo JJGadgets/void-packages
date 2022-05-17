@@ -65,7 +65,10 @@ _EOF
 	export CMAKE_GENERATOR="${CMAKE_GENERATOR:-Ninja}"
 	# Remove -pipe: https://gitlab.kitware.com/cmake/cmake/issues/19590
 	CFLAGS="-DNDEBUG ${CFLAGS/ -pipe / }" CXXFLAGS="-DNDEBUG ${CXXFLAGS/ -pipe / }" \
-		cmake ${cmake_args} ${configure_args} ${wrksrc}/${build_wrksrc}
+		cmake ${cmake_args} ${configure_args} \
+		${LIBS:+-DCMAKE_C_STANDARD_LIBRARIES="$LIBS"} \
+		${LIBS:+-DCMAKE_CXX_STANDARD_LIBRARIES="$LIBS"} \
+		${wrksrc}/${build_wrksrc}
 
 	# Replace -isystem with -I
 	if [ "$CMAKE_GENERATOR" = "Unix Makefiles" ]; then
@@ -113,7 +116,7 @@ do_check() {
 
 	: ${make_check_target:=test}
 
-	${make_cmd} ${make_check_args} ${make_check_target}
+	${make_check_pre} ${make_cmd} ${make_check_args} ${make_check_target}
 }
 
 do_install() {

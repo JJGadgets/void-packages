@@ -1,21 +1,15 @@
-# Template file for 'linux5.10-rt-xanmod'
-pkgname=linux5.10-rt-xanmod
-version=5.10.41
+# Template file for 'linux5.4'
+pkgname=linux5.4
+version=5.4.193
 revision=1
-_rt=42
-_xanmod=1
-wrksrc="linux-${version}-rt${_rt}-xanmod${_xanmod}"
-short_desc="Linux kernel and modules with Xanmod patches (${version%.*} series)"
-maintainer="MarcoAPC <marcoaureliopc@gmail.com>"
+wrksrc="linux-${version}"
+short_desc="Linux kernel and modules (${version%.*} series)"
+maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="GPL-2.0-only"
-homepage="http://www.xanmod.org/"
-distfiles="https://github.com/xanmod/linux/archive/${version}-rt${_rt}-xanmod${_xanmod}.tar.gz"
-checksum=2bed4c07bbd694d11f6d07908f9e9e3dd87c4d8c82adbd760cb8e78434bca5fc
+homepage="https://www.kernel.org"
+distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version}.tar.xz"
+checksum=0d16d343956d311e3f4ab3f032fd626d8e6b67c0db94edd32f561407d374f2a0
 python_version=3
-patch_args="-Np1"
-
-# XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
-archs="x86_64* i686* ppc* aarch64*"
 
 nodebug=yes  # -dbg package is generated below manually
 nostrip=yes
@@ -23,10 +17,11 @@ noverifyrdeps=yes
 noshlibprovides=yes
 preserve=yes
 
-hostmakedepends="tar xz lz4 bc-gh elfutils-devel flex gmp-devel kmod libmpc-devel
- openssl-devel perl uboot-mkimage cpio pahole python3"
+archs="i686* x86_64* armv5tel* armv6l* armv7l* aarch64* ppc* mips*"
+hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
+ openssl-devel perl uboot-mkimage cpio"
 
-_kernver="${version}-rt${_rt}-xanmod${_xanmod}_${revision}"
+_kernver="${version}_${revision}"
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
 
@@ -46,23 +41,16 @@ mutable_files="
 # reproducible build
 export KBUILD_BUILD_TIMESTAMP=${SOURCE_DATE_EPOCH:-0}
 export KBUILD_BUILD_USER=voidlinux
-export KBUILD_BUILD_HOST=xanmod
-
-if [ "$CROSS_BUILD" ]; then
-	_cross="CROSS_COMPILE=${XBPS_CROSS_TRIPLET}-"
-fi
-if [ "${_patchver}" ]; then
-	_version="EXTRAVERSION=${_patchver}"
-fi
+export KBUILD_BUILD_HOST=voidlinux
 
 do_configure() {
-	# 5.8 misses Documentation/DocBook. We ship the directory from 4.12 here.
+	# 5.4 misses Documentation/DocBook. We ship the directory from 4.12 here.
 	cp -a $FILESDIR/DocBook -t Documentation
 
 	# If there's a file called <arch>-dotconfig, use it to
 	# configure the kernel; otherwise use arch defaults and all stuff
 	# as modules (allmodconfig).
-	local arch subarch
+	local arch subarch _args
 
 	case "$XBPS_TARGET_MACHINE" in
 		i686*) arch=i386;;
@@ -75,21 +63,25 @@ do_configure() {
 		mips*) arch=mips;;
 	esac
 
+	if [ "$CROSS_BUILD" ]; then
+		_args="CROSS_COMPILE=${XBPS_CROSS_TRIPLET}-"
+	fi
+
 	if [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom ]; then
 		msg_normal "Detected a custom .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom .config
-		make  ${makejobs} ARCH=$arch ${_args} oldconfig
+		make ${makejobs} ARCH=$arch ${_args} oldconfig
 	elif [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig ]; then
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
-		make  ${makejobs} ARCH=$arch ${_args} oldconfig
+		make ${makejobs} ARCH=$arch ${_args} oldconfig
 	elif [ -f ${FILESDIR}/${XBPS_TARGET_MACHINE%%-musl}-dotconfig ]; then
 		msg_normal "Detected a .config file for your cpu family, using it.\n"
 		cp -f ${FILESDIR}/${XBPS_TARGET_MACHINE%%-musl}-dotconfig .config
-		make  ${makejobs} ARCH=$arch ${_args} oldconfig
+		make ${makejobs} ARCH=$arch ${_args} oldconfig
 	else
 		msg_normal "Defaulting to 'allmodconfig'.\n"
-		make  ${makejobs} ARCH=$arch ${_args} allmodconfig
+		make ${makejobs} ARCH=$arch ${_args} allmodconfig
 	fi
 	# Always use our revision to CONFIG_LOCALVERSION to match our pkg version.
 	sed -i -e "s|^\(CONFIG_LOCALVERSION=\).*|\1\"_${revision}\"|" .config
@@ -106,9 +98,15 @@ do_build() {
 		ppc*) _args="zImage modules"; arch=powerpc;;
 		mips*) _args="uImage modules dtbs"; arch=mips;;
 	esac
+	if [ "$CROSS_BUILD" ]; then
+		_cross="CROSS_COMPILE=${XBPS_CROSS_TRIPLET}-"
+	fi
+	if [ "${_patchver}" ]; then
+		_version="EXTRAVERSION=${_patchver}"
+	fi
 	export LDFLAGS=
-	make  ARCH=$arch ${_version} ${_cross} ${makejobs} prepare
-	make  ARCH=$arch ${_version} ${_cross} ${makejobs} ${_args}
+	make ARCH=$arch ${_version} ${_cross} ${makejobs} prepare
+	make ARCH=$arch ${_version} ${_cross} ${makejobs} ${_args}
 }
 
 do_install() {
@@ -127,7 +125,7 @@ do_install() {
 	sed -i '2iexit 0' scripts/depmod.sh
 
 	# Install kernel, firmware and modules
-	make  ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} modules_install
+	make ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} modules_install
 
 	hdrdest=${DESTDIR}/usr/src/kernel-headers-${_kernver}
 
@@ -140,11 +138,11 @@ do_install() {
 			;;
 		arm)
 			vinstall arch/arm/boot/zImage 644 boot
-			make  ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
 			;;
 		arm64)
 			vinstall arch/arm64/boot/Image 644 boot vmlinux-${_kernver}
-			make  ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
 			;;
 		powerpc)
 			# zImage on powerpc is useless as it won't load initramfs
@@ -154,7 +152,7 @@ do_install() {
 			;;
 		mips)
 			vinstall arch/mips/boot/uImage.bin 644 boot uImage-${_kernver}
-			make  ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
+			make ${makejobs} ARCH=${subarch:-$arch} INSTALL_DTBS_PATH=${DESTDIR}/boot/dtbs/dtbs-${_kernver} dtbs_install
 			;;
 	esac
 
@@ -183,7 +181,7 @@ do_install() {
 	# Remove firmware stuff provided by the "linux-firmware" pkg.
 	rm -rf ${DESTDIR}/usr/lib/firmware
 
-	for i in acpi asm-generic clocksource config crypto drm generated linux vdso \
+	for i in acpi asm-generic clocksource config crypto drm generated linux \
 		math-emu media net pcmcia scsi sound trace uapi video xen dt-bindings; do
 		if [ -d include/$i ]; then
 			cp -a include/$i ${hdrdest}/include
@@ -198,7 +196,7 @@ do_install() {
 	# if generated files from the scripts/ directory need to be included,
 	# they need to be copied to ${hdrdest} before this step
 	if [ "$CROSS_BUILD" ]; then
-		make  ${makejobs} ARCH=${subarch:-$arch} _mrproper_scripts
+		make ${makejobs} ARCH=${subarch:-$arch} _mrproper_scripts
 		# remove host specific objects as well
 		find scripts -name '*.o' -delete
 	fi
@@ -243,6 +241,10 @@ do_install() {
 		mkdir -p ${hdrdest}/drivers/media/i2c/${i}
 		cp -a drivers/media/i2c/${i}/*.h ${hdrdest}/drivers/media/i2c/${i}
 	done
+
+	# Add docbook makefile
+	install -Dm644 Documentation/DocBook/Makefile \
+		${hdrdest}/Documentation/DocBook/Makefile
 
 	# Add md headers
 	mkdir -p ${hdrdest}/drivers/md
@@ -292,7 +294,6 @@ do_install() {
 		i386|x86_64) _args="arm* p*";;
 		arm|arm64) _args="x86* p*";;
 		powerpc) _args="arm* x86* parisc";;
-		mips) _args="mips* p*";;
 	esac
 	for arch in alpha avr32 blackfin cris frv h8300 \
 		ia64 m* s* um v850 xtensa ${_args}; do
@@ -314,7 +315,7 @@ do_install() {
 	# ... and run depmod again.
 	depmod -b ${DESTDIR}/usr -F System.map ${_kernver}
 }
-linux5.10-rt-xanmod-headers_package() {
+linux5.4-headers_package() {
 	preserve=yes
 	nostrip=yes
 	noshlibprovides=yes
@@ -324,7 +325,7 @@ linux5.10-rt-xanmod-headers_package() {
 		vmove usr/lib/modules/${_kernver}/build
 	}
 }
-linux5.10-rt-xanmod-dbg_package() {
+linux5.4-dbg_package() {
 	preserve=yes
 	nostrip=yes
 	noverifyrdeps=yes
@@ -333,5 +334,6 @@ linux5.10-rt-xanmod-dbg_package() {
 	short_desc+=" - debugging symbols"
 	pkg_install() {
 		vmove usr/lib/debug
+		vmove "boot/System.map-${_kernver}"
 	}
 }

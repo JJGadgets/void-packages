@@ -1,6 +1,14 @@
-name: Check PR
+name: Check build
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - 'srcpkgs/**'
+  push:
+    branches:
+      - 'ci-**'
+    paths:
+      - 'srcpkgs/**'
 
 jobs:
   # Lint changed templates.
@@ -85,6 +93,22 @@ jobs:
           cd /
           "$here/common/travis/show_files.sh" "$BOOTSTRAP" "$ARCH"
           )
+
+      - name: Compare to previous
+        run: |
+          (
+          here="$(pwd)"
+          cd /
+          "$here/common/travis/xpkgdiff.sh" "$BOOTSTRAP" "$ARCH"
+          )
+
+      - name: Check file conflicts
+        if: matrix.config.arch == 'x86_64' # the arch indexed in xlocate
+        run: |
+          if [ -s /tmp/templates ]; then
+              xlocate -S &&
+              common/scripts/lint-conflicts $HOME/hostdir/binpkgs
+          fi
 
       - name: Verify repository state
         run: |
